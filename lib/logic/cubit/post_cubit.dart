@@ -8,12 +8,13 @@ part 'post_state.dart';
 
 class PostCubit extends Cubit<PostState> {
   PostCubit() : super(PostInitial()) {
-    emit(PostInitial());
+
     fetchdata();
   }
 
   Future<void> fetchdata() async {
     // await Future.delayed(Duration(seconds:2));
+    // emit(PostLoading());
 
     try {
       datamodel quote = await PostRepository().fetchdata();

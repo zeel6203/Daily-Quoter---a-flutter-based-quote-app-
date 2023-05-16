@@ -1,44 +1,60 @@
 class datamodel {
-  String? sId;
-  String? content;
-  String? author;
-  List<String>? tags;
-  String? authorSlug;
-  int? length;
-  String? dateAdded;
-  String? dateModified;
+  final String id;
+  final String content;
+  final String author;
+  final List<String> tags;
+  final String authorSlug;
+  final int length;
+  final String dateAdded;
+  final String dateModified;
 
-  datamodel(
-      {this.sId,
-        this.content,
-        this.author,
-        this.tags,
-        this.authorSlug,
-        this.length,
-        this.dateAdded,
-        this.dateModified});
+  datamodel({
+    required this.id,
+    required this.content,
+    required this.author,
+    required this.tags,
+    required this.authorSlug,
+    required this.length,
+    required this.dateAdded,
+    required this.dateModified,
+  });
 
-  datamodel.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    content = json['content'];
-    author = json['author'];
-    tags = json['tags'].cast<String>();
-    authorSlug = json['authorSlug'];
-    length = json['length'];
-    dateAdded = json['dateAdded'];
-    dateModified = json['dateModified'];
+  factory datamodel.fromJson(Map<String, dynamic> json) {
+    return datamodel(
+      id: json['_id'],
+      content: json['content'],
+      author: json['author'],
+      tags: List<String>.from(json['tags']),
+      authorSlug: json['authorSlug'],
+      length: json['length'],
+      dateAdded: json['dateAdded'],
+      dateModified: json['dateModified'],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['content'] = this.content;
-    data['author'] = this.author;
-    data['tags'] = this.tags;
-    data['authorSlug'] = this.authorSlug;
-    data['length'] = this.length;
-    data['dateAdded'] = this.dateAdded;
-    data['dateModified'] = this.dateModified;
-    return data;
+    return {
+      'id': id,
+      'content': content,
+      'author': author,
+      'tags': tags.join(","),
+      'authorSlug': authorSlug,
+      'length': length,
+      'dateAdded': dateAdded,
+      'dateModified': dateModified,
+    };
+
+  }
+  static datamodel fromJsonforread(Map<String, dynamic> json) {
+    return datamodel(
+      id: json['id'],
+      content: json['content'],
+      author: json['author'],
+      tags: json['tags'].split(','),
+      authorSlug: json['authorSlug'],
+      length: json['length'],
+      dateAdded: json['dateAdded'],
+      dateModified: json['dateModified'],
+    );
   }
 }

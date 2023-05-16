@@ -1,10 +1,13 @@
 import 'package:api_to_sql/extra.dart';
 import 'package:api_to_sql/logic/cubit/post_cubit.dart';
+import 'package:api_to_sql/logic/cubit/savedquotecubit_cubit.dart';
+// import 'package:api_to_sql/logic/cubit/updatecubit/update_cubit.dart';
 import 'package:api_to_sql/presentation/screen/homescreen.dart';
+import 'package:api_to_sql/presentation/screen/savedlist.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter/services.dart';
 import 'data/repositary/apis/api.dart';
 
 Future<void> main() async {
@@ -24,12 +27,23 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => PostCubit(),
-      child: MaterialApp(
-        home: Home(),
-        debugShowCheckedModeBanner: false,
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme:ThemeData(
+          androidOverscrollIndicator: AndroidOverscrollIndicator.stretch
+      ) ,
+
+      home: BlocProvider(create: (context) => PostCubit(),
+
+      child: Home(),
+
+
       ),
+routes: {
+        "/saved": (context)=>BlocProvider(create: (context) => SavedquotecubitCubit(), child: savedlist())
+},
+
     );
   }
+
 }
