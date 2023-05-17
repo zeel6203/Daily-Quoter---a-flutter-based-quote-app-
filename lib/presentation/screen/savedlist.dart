@@ -1,3 +1,4 @@
+// import 'dart:js';
 import 'dart:math';
 import 'dart:ui';
 
@@ -29,7 +30,9 @@ class _savedlistState extends State<savedlist> {
         appBar:
             AppBar(title: Text('Saved Quotes'), backgroundColor: Colors.black),
         body: RefreshIndicator(
-          onRefresh: () async {},
+          onRefresh: () async {
+            BlocProvider.of<SavedquotecubitCubit>(context).fetchfromdb();
+          },
           child: Container(
             height: double.infinity,
             width: double.infinity,
@@ -52,9 +55,12 @@ class _savedlistState extends State<savedlist> {
                       child: TextField(
                         // out
                         decoration: InputDecoration(
-                          prefixIcon: Icon(Icons.search),
-                          hintText: "search",
-                        ),
+                            prefixIcon: Icon(Icons.search),
+                            hintText: "search",
+                            suffixIcon: IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.filter_list),
+                            )),
                         onChanged: (newvalue) {
                           BlocProvider.of<SavedquotecubitCubit>(context)
                               .fetchfromdb(texttofind: newvalue);
@@ -75,7 +81,7 @@ class _savedlistState extends State<savedlist> {
                         return Center(child: CircularProgressIndicator());
                       } else if (state is SavedLoaded) {
                         print("${state.saveddata} is already loaded");
-                        return savedquotelist(state);
+                        return savedquotelist(state, context);
                       } else if (state is Empty) {
                         return Center(
                             child: Center(
@@ -114,7 +120,9 @@ class _savedlistState extends State<savedlist> {
   }
 }
 
-Widget savedquotelist(statedata) {
+Widget savedquotelist(statedata, context) {
+  double width = MediaQuery.of(context).size.width;
+
   return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: false,
@@ -151,7 +159,7 @@ Widget savedquotelist(statedata) {
                                 Padding(
                                   padding: const EdgeInsets.all(11.0),
                                   child: Container(
-                                      width: 290,
+                                      width: width - 100,
                                       child: Text(
                                           """ " ${statedata.saveddata?[index].content!} " """,
                                           overflow: TextOverflow.ellipsis,
@@ -186,8 +194,13 @@ Widget savedquotelist(statedata) {
                                     )),
                                 // update button
                                 IconButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       //todo: update
+                                      await openupdatedialogue(
+                                          context, statedata.saveddata?[index]);
+                                      // BlocProvider.of<SavedquotecubitCubit>(
+                                      //     context)
+                                      //     .fetchfromdb();
                                     },
                                     icon: Icon(
                                       Icons.edit,
@@ -237,7 +250,6 @@ Widget savedquotelist(statedata) {
                             //
                             //   )),
                             // )
-
                           ],
                         )
                       ],
@@ -245,4 +257,90 @@ Widget savedquotelist(statedata) {
               ),
             ));
       });
+}
+
+// Future openfilterdialogue(BuildContext context){
+//   return showDialog(context: context, builder: (){
+//     return
+//   });
+// }
+
+Future openupdatedialogue(BuildContext context, datamodel quote) {
+  final quotecontroller = TextEditingController();
+  quotecontroller.text = quote.content;
+  final authorcontroller = TextEditingController();
+  authorcontroller.text = quote.author;
+  return showDialog(
+    context: context,
+    builder: (context1) {
+      return BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+        child: AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadiusDirectional.circular(20)),
+          title: Text("edit the quote"),
+          alignment: Alignment.center,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: "quote",
+                    icon: Icon(Icons.format_quote),
+                  ),
+                  controller: quotecontroller,
+                  maxLines: 4,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: "author",
+                    icon: Icon(Icons.person),
+                  ),
+                  controller: authorcontroller,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: TextButton(
+                    onPressed: () async {
+                      //todo: update
+                      quote.content = quotecontroller.text;
+                      quote.author = authorcontroller.text;
+                      BlocProvider.of<SavedquotecubitCubit>(context)
+                          .update(quote);
+                      Navigator.of(context).pop();
+                      // return;
+                    },
+                    child: Container(
+                      height: 40,
+                      width: double.maxFinite,
+                      decoration: BoxDecoration(
+                          boxShadow: [BoxShadow(color: Colors.black)],
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(20),),
+                      child: Center(
+                        child: Text(
+                          "save",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),),
+                      ),
+                    ),
+                  ),
+                ),
+
+            ],
+          ),
+        ),
+      );
+    },
+  );
 }
