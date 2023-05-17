@@ -158,7 +158,7 @@ class _HomeState extends State<Home> {
   }
 
   void _insert(datamodel data) async{
-    print(data.tags);
+    data.dateAdded=DateTime.now().toString();
     int? id= await dbhelper.insert(data);
     print(id);
   }
