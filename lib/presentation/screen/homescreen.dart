@@ -63,7 +63,8 @@ class _HomeState extends State<Home> {
                   //todo : databse
                   return mainbody(state.quote!);
                 } else if (state is PostError) {
-                  return Text("errror");
+                  return Text(state.errormsg??"error not found");
+
                 } else {
                   return Text("unknown error");
                 }

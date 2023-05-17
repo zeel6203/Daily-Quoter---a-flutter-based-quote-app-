@@ -59,7 +59,7 @@ class DatabaseHelper {
     final results = await db.query("quotes");
     print("fetched $results");
     var resultinlist = List.generate(results.length, (index) {
-      return datamodel.fromJsonforread(results[index]);
+      return datamodel.fromJsonfordatabase(results[index]);
     });
     print("list ____ : $resultinlist");
     // return resultinlist;
@@ -85,4 +85,13 @@ class DatabaseHelper {
     Database db = await instance.database;
     return await db.delete("quotes", where: '$columnId = ?', whereArgs: [id]);
   }
+
+  Future<int> update (datamodel quote) async {
+    Database db = await instance.database;
+    String id= quote.id;
+    return await db.update("quotes",quote.toJson(),where: "$columnId = ?",whereArgs: [id]);
+
+
+  }
+
 }

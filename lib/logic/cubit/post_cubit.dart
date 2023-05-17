@@ -14,14 +14,14 @@ class PostCubit extends Cubit<PostState> {
 
   Future<void> fetchdata() async {
     // await Future.delayed(Duration(seconds:2));
-    // emit(PostLoading());
+    emit(PostLoading());
 
     try {
       datamodel quote = await PostRepository().fetchdata();
       emit(PostLoaded(quote));
     }
     catch(ex) {
-      emit(PostError());
+      emit(PostError(ex.toString()));
     }
   }
 

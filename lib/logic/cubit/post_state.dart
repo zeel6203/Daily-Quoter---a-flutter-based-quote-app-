@@ -12,4 +12,7 @@ class PostLoaded extends PostState {
   PostLoaded(this.quote);
 }
 
-class PostError extends PostState {}
+class PostError extends PostState {
+  String? errormsg;
+  PostError(this.errormsg);
+}

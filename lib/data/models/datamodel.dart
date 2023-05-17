@@ -1,12 +1,12 @@
 class datamodel {
-  final String id;
-  final String content;
-  final String author;
-  final List<String> tags;
-  final String authorSlug;
-  final int length;
-  final String dateAdded;
-  final String dateModified;
+  String id;
+  String content;
+  String author;
+  List<String> tags;
+  String authorSlug;
+  int length;
+  String dateAdded;
+  String dateModified;
 
   datamodel({
     required this.id,
@@ -45,7 +45,7 @@ class datamodel {
     };
 
   }
-  static datamodel fromJsonforread(Map<String, dynamic> json) {
+  static datamodel fromJsonfordatabase(Map<String, dynamic> json) {
     return datamodel(
       id: json['id'],
       content: json['content'],

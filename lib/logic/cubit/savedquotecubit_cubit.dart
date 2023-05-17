@@ -44,5 +44,15 @@ class SavedquotecubitCubit extends Cubit<SavedquoteState> {
 
   }
 
+  update(datamodel quote) async{
+    try{
+      final dbhelper = DatabaseHelper.instance;
+      await dbhelper.update(quote);
+      fetchfromdb();
+  }catch(ex){
+
+  }
+}
+
   // update()
 }
