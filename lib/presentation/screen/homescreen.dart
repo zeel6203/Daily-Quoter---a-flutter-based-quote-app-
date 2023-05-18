@@ -51,6 +51,17 @@ class _HomeState extends State<Home> {
             BlocConsumer<PostCubit, PostState>(
               listener: (context, state) {
                 // TODO: implement listener
+                if (state is PostError){
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    padding: EdgeInsets.all(20),
+                    content: Text("please turn on internet "),
+                    elevation: 20,
+                    behavior: SnackBarBehavior.floating,
+                    backgroundColor: Colors.black45,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                  ));
+                }
               },
               builder: (context, state) {
                 if (state is PostInitial || state is PostLoading) {
@@ -67,7 +78,7 @@ class _HomeState extends State<Home> {
                   //todo : databse
                   return mainbody(state.quote!);
                 } else if (state is PostError) {
-                  return Text(state.errormsg ?? "error not found");
+                  return Center(child: Text(" please turn on internnet"));
                 } else {
                   return Text("unknown error");
                 }

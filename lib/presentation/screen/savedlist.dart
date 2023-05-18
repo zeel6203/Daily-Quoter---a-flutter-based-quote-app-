@@ -95,26 +95,28 @@ class _savedlistState extends State<savedlist> {
 
                       return savedquotelist(state, context);
                     } else if (state is Empty) {
-                      return ListView(
-                        shrinkWrap: false,
-                        children: [Center(
-                            child: Center(
-                          child: Container(
-                            width: 250,
-                            height: 100,
-                            decoration: BoxDecoration(color: Colors.orange),
-                            child: Center(
-                                child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "no results found ",
-                                style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.bold),
-                              ),
-                            )),
-                          ),
-                        )),]
-                      );
+                      return ListView(shrinkWrap: false, children: [
+                        SizedBox(
+                          height:MediaQuery.of(context).size.height/4,
+                          child: Center(
+                              child: Center(
+                            child: Container(
+                              width: 250,
+                              height: 100,
+                              decoration: BoxDecoration(color: Colors.orange),
+                              child: Center(
+                                  child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "no results found ",
+                                  style: TextStyle(
+                                      fontSize: 25, fontWeight: FontWeight.bold),
+                                ),
+                              )),
+                            ),
+                          )),
+                        ),
+                      ]);
                     } else {
                       return Text("error ");
                     }
@@ -348,8 +350,8 @@ String gettextfromdate(DateTime? date) {
 Future openfilterdialogue(BuildContext context) {
   final startdatecontroller = TextEditingController();
   final enddatecontroller = TextEditingController();
-  startdatecontroller.text=gettextfromdate(startdate);
-  enddatecontroller.text=gettextfromdate(enddate);
+  startdatecontroller.text = gettextfromdate(startdate);
+  enddatecontroller.text = gettextfromdate(enddate);
 
   return showDialog(
       context: context,
@@ -362,132 +364,164 @@ Future openfilterdialogue(BuildContext context) {
                 borderRadius: BorderRadiusDirectional.circular(20)),
             title: Text("Filter"),
             backgroundColor: Colors.white,
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // DropdownButton(
-                //   items: authorlist.map((item) {
-                //     return DropdownMenuItem(
-                //       child: Text(item),
-                //     );
-                //   }).toList(),
-                //   onChanged: (value) {},
-                // ),
-                Center(
-                  child: Text("select duration"),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            // border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: TextField(
-                          decoration: InputDecoration(label: Text("From")),
-                          readOnly: true,
-                          onTap: () => startdatepicker(
-                              context, startdatecontroller),
-                          controller: startdatecontroller,
-                        )),
-                    Icon(Icons.navigate_next),
-                    Container(
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        height: 50,
-                        decoration: BoxDecoration(
-                            // border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: TextField(
-                          decoration: InputDecoration(label: Text("To")),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // DropdownButton(
+                  //   items: authorlist.map((item) {
+                  //     return DropdownMenuItem(
+                  //       child: Text(item),
+                  //     );
+                  //   }).toList(),
+                  //   onChanged: (value) {},
+                  // ),
 
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: Icon(Icons.calendar_month,color: Colors.black45,),
+                      ),
 
-                          readOnly: true,
-                          onTap: () =>
-                              enddatepicker(context,dialogcontext ,enddatecontroller),
-                          controller: enddatecontroller,
-                        )),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    // width: MediaQuery.of(context).size.width - 20,
-                    child: DropdownMenu(
-
-                      enableSearch: false,
-                        enableFilter: false,
-                        width: MediaQuery.of(context).size.width - 150,
-                        label: Text("author"),
-                        leadingIcon: Icon(Icons.person),
-                        inputDecorationTheme: InputDecorationTheme(),
-                        initialSelection: authorselected,
-                        onSelected: (value) {
-                          authorselected = value;
-
-                          // BlocProvider.of<SavedquotecubitCubit>(context)
-                          //     .fetchfromdb(texttofind: value);
-                        },
-                        dropdownMenuEntries: authorlist.map((item) {
-                          return DropdownMenuEntry(value: item, label: item);
-                        }).toList()),
+                      Container(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              // border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(20)),
+                          child: TextField(
+                            decoration: InputDecoration(label: Text("From")),
+                            readOnly: true,
+                            onTap: () =>
+                                startdatepicker(context, startdatecontroller),
+                            controller: startdatecontroller,
+                          )),
+                      Icon(Icons.navigate_next),
+                      Container(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          height: 50,
+                          decoration: BoxDecoration(
+                              // border: Border.all(color: Colors.black),
+                              borderRadius: BorderRadius.circular(20)),
+                          child: TextField(
+                            decoration: InputDecoration(label: Text("To")),
+                            readOnly: true,
+                            onTap: () => enddatepicker(
+                                context, dialogcontext, enddatecontroller),
+                            controller: enddatecontroller,
+                          )),
+                    ],
                   ),
-                ),
-                // DropdownButton(items: authorlist.map((item) => DropdownMenuItem(child: )), onChanged: onChanged)
-                // DropdownMenu(
-                //     width: MediaQuery.of(context).size.width - 150,
-                //     label: Text("tags"),
-                //     leadingIcon: Icon(Icons.tag_sharp),
-                //     inputDecorationTheme: InputDecorationTheme(),
-                //     initialSelection: tagselected,
-                //     onSelected: (value) {
-                //       tagselected = value;
-                //
-                //       // BlocProvider.of<SavedquotecubitCubit>(context)
-                //       //     .fetchfromdb(texttofind: value);
-                //     },
-                //     dropdownMenuEntries: tagslist.map((item) {
-                //       return DropdownMenuEntry(value: item, label: item);
-                //     }).toList()),
-                //todo: tags filter
-                Container(),
-                Padding(
-                  padding: const EdgeInsets.only(top: 20.0),
-                  child: Center(
-                    child: TextButton(
-                      onPressed: () async {
-                        //todo: update
 
-                        Navigator.of(context).pop();
-                        // return;
-                      },
-                      child: Container(
-                        height: 40,
-                        width: double.maxFinite,
-                        decoration: BoxDecoration(
-                          boxShadow: [BoxShadow(color: Colors.black)],
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: TextButton(
-                          onPressed: () { BlocProvider.of<SavedquotecubitCubit>(context).fetchfromdb(start: startdate,end: enddate,author:authorselected,tag:tagselected);
-                            Navigator.pop(dialogcontext);},
-                          child: Center(
-                            child: Text(
-                              "apply",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      child: DropdownButtonFormField(
+
+                        decoration: InputDecoration(label: Text("author"),icon: Icon(Icons.person)),
+                        // icon: Icon(Icons.person),
+                        items: authorlist
+                            .map((item) => DropdownMenuItem(
+                                  child: Text(item),
+                                  value: item,
+                                ))
+                            .toList(),
+                        value: authorselected,
+
+                        onChanged: (value) {
+                          print("🟥🟥🟥🟥🟥$value");
+                          authorselected=value.toString();
+                          // tagselected = value.toString();
+                        },
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      child: DropdownButtonFormField(
+
+                        decoration: InputDecoration(label: Text("tags"),icon: Icon(Icons.tag)),
+                        // icon: Icon(Icons.person),
+                        items: tagslist
+                            .map((item) => DropdownMenuItem(
+                                  child: Text(item),
+                                  value: item,
+                                ))
+                            .toList(),
+                        value: tagselected,
+
+                        onChanged: (value) {
+                          print("🟥🟥🟥🟥🟥$value");
+                          // authorselected=value.toString();
+                          tagselected = value.toString();
+                        },
+                      ),
+                    ),
+                  ),
+                  // DropdownMenu(
+                  //     width: MediaQuery.of(context).size.width - 150,
+                  //     label: Text("tags"),
+                  //     leadingIcon: Icon(Icons.tag_sharp),
+                  //     inputDecorationTheme: InputDecorationTheme(),
+                  //     initialSelection: tagselected,
+                  //     onSelected: (value) {
+                  //       tagselected = value;
+                  //
+                  //       // BlocProvider.of<SavedquotecubitCubit>(context)
+                  //       //     .fetchfromdb(texttofind: value);
+                  //     },
+                  //     dropdownMenuEntries: tagslist.map((item) {
+                  //       return DropdownMenuEntry(value: item, label: item);
+                  //     }).toList()),
+                  //todo: tags filter
+                  Container(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20.0),
+                    child: Center(
+                      child: TextButton(
+                        onPressed: () async {
+                          //todo: update
+
+                          Navigator.of(context).pop();
+                          // return;
+                        },
+                        child: Container(
+                          height: 40,
+                          width: double.maxFinite,
+                          decoration: BoxDecoration(
+                            boxShadow: [BoxShadow(color: Colors.black)],
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: TextButton(
+                            onPressed: () {
+                              BlocProvider.of<SavedquotecubitCubit>(context)
+                                  .fetchfromdb(
+                                      start: startdate,
+                                      end: enddate,
+                                      author: authorselected,
+                                      tag: tagselected);
+                              Navigator.pop(dialogcontext);
+                            },
+                            child: Center(
+                              child: Text(
+                                "apply",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -497,6 +531,7 @@ Future openfilterdialogue(BuildContext context) {
 Future startdatepicker(BuildContext context, controller) async {
   final initialadate = DateTime.now();
   final newdate = await showDatePicker(
+
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(DateTime.now().year - 5),
@@ -506,10 +541,9 @@ Future startdatepicker(BuildContext context, controller) async {
   }
   startdate = newdate;
   controller.text = gettextfromdate(newdate);
-
 }
 
-Future enddatepicker(BuildContext context,dialogcontext, controller) async {
+Future enddatepicker(BuildContext context, dialogcontext, controller) async {
   final initialadate = DateTime.now();
   final newdate = await showDatePicker(
       context: context,
@@ -520,13 +554,13 @@ Future enddatepicker(BuildContext context,dialogcontext, controller) async {
   if (newdate == null) {
     return;
   }
-  if(newdate.isBefore(startdate!) && startdate!=null){
-    ScaffoldMessenger.of(dialogcontext).showSnackBar(SnackBar(content: Text("please provide valid range !!")));
-Navigator.of(dialogcontext).pop();
+  if (newdate.isBefore(startdate!) && startdate != null) {
+    ScaffoldMessenger.of(dialogcontext)
+        .showSnackBar(SnackBar(content: Text("please provide valid range !!")));
+    Navigator.of(dialogcontext).pop();
   }
   enddate = newdate;
   controller.text = gettextfromdate(newdate);
-
 }
 
 Future openupdatedialogue(BuildContext context, datamodel quote) {
@@ -574,16 +608,19 @@ Future openupdatedialogue(BuildContext context, datamodel quote) {
                   child: TextButton(
                     onPressed: () async {
                       //todo: update
-                      if(quotecontroller.text.length<1 || authorcontroller.text.length<1){
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("unable to save because value is empty")));
-      Navigator.of(context).pop();
-
-      }else{
-                      quote.content = quotecontroller.text;
-                      quote.author = authorcontroller.text;
-                      BlocProvider.of<SavedquotecubitCubit>(context)
-                          .update(quote);
-                      Navigator.of(context).pop();}
+                      if (quotecontroller.text.length < 1 ||
+                          authorcontroller.text.length < 1) {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content:
+                                Text("unable to save because value is empty")));
+                        Navigator.of(context).pop();
+                      } else {
+                        quote.content = quotecontroller.text;
+                        quote.author = authorcontroller.text;
+                        BlocProvider.of<SavedquotecubitCubit>(context)
+                            .update(quote);
+                        Navigator.of(context).pop();
+                      }
                       // return;
                     },
                     child: Container(

@@ -2,7 +2,7 @@
     package="com.example.api_to_sql">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="api_to_sql"
+        android:label="Daily Quoter"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

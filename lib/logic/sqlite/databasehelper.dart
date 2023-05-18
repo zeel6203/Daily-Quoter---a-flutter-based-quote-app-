@@ -100,7 +100,9 @@ class DatabaseHelper {
         }
         else {
           print("🟨🟩");
-          finalresultlist.add(item);
+          if (item.author.contains(author) && item.tags.toString().contains(tag)) {
+            finalresultlist.add(item);
+          }
         }
       }else if (item.content.toLowerCase().contains(texttofind.toLowerCase()) ||
           item.author.toLowerCase().contains(texttofind.toLowerCase()) ||
