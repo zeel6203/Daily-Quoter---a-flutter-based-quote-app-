@@ -54,17 +54,20 @@ class _HomeState extends State<Home> {
               },
               builder: (context, state) {
                 if (state is PostInitial || state is PostLoading) {
-                  return Center(child: Padding(
-                    padding: const EdgeInsets.all(50.0),
-                    child: CircularProgressIndicator(color: Colors.black,),
-                  ));
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height/2,
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.black,
+                      ),
+                    ),
+                  );
                 } else if (state is PostLoaded) {
-                  currentquote=state.quote;
+                  currentquote = state.quote;
                   //todo : databse
                   return mainbody(state.quote!);
                 } else if (state is PostError) {
-                  return Text(state.errormsg??"error not found");
-
+                  return Text(state.errormsg ?? "error not found");
                 } else {
                   return Text("unknown error");
                 }
@@ -78,24 +81,35 @@ class _HomeState extends State<Home> {
         padding: const EdgeInsets.only(right: 10.0),
         child: Row(
 
-          // mainAxisSize: MainAxisSize.max,
+            // mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
                 padding: const EdgeInsets.only(left: 20, bottom: 20),
                 child: ElevatedButton.icon(
-                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.cyan),elevation: MaterialStateProperty.all(20)),
-/// SAVE BUTTON
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.cyan),
+                      elevation: MaterialStateProperty.all(20)),
+
+                  /// SAVE BUTTON
                   onPressed: () {
                     print(currentquote);
-                    if(currentquote !=null){
-                    _insert(currentquote!);}
+                    if (currentquote != null) {
+                      _insert(currentquote!);
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        padding: EdgeInsets.all(20),
+                        content: Text("Quote saved!! "),
+                        elevation: 20,
+                        behavior: SnackBarBehavior.floating,
+                        backgroundColor: Colors.black45,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                      ));
+                    }
                     // print(_read());
-
                   },
                   icon: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10.0),
-
                     child: Icon(
                       Icons.bookmark_add,
                       size: 35,
@@ -109,11 +123,14 @@ class _HomeState extends State<Home> {
                 padding: const EdgeInsets.only(right: 20, bottom: 20),
                 child: BlocBuilder<PostCubit, PostState>(
                   builder: (context, state) {
-                    if(state is PostInitial || state is PostLoading){
+                    if (state is PostInitial || state is PostLoading) {
                       final state = context.watch<PostCubit>().state;
                       // print(state);
                       return ElevatedButton.icon(
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.cyan),elevation: MaterialStateProperty.all(20)),
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.cyan),
+                            elevation: MaterialStateProperty.all(20)),
                         onPressed: () {
                           // BlocProvider.of<PostCubit>(context).fetchdata();
                         },
@@ -125,13 +142,18 @@ class _HomeState extends State<Home> {
                             color: Colors.white,
                           ),
                         ),
-                        label: Text("next",style: TextStyle(fontWeight: FontWeight.bold),),
+                        label: Text(
+                          "next",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       );
-                    }
-                    else if(state is PostLoaded){
+                    } else if (state is PostLoaded) {
                       print(state.quote!.tags);
                       return ElevatedButton.icon(
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.cyan),elevation: MaterialStateProperty.all(20)),
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.cyan),
+                            elevation: MaterialStateProperty.all(20)),
                         onPressed: () {
                           BlocProvider.of<PostCubit>(context).fetchdata();
                         },
@@ -143,10 +165,12 @@ class _HomeState extends State<Home> {
                             color: Colors.white,
                           ),
                         ),
-                        label: Text("next",style: TextStyle(fontWeight: FontWeight.bold),),
+                        label: Text(
+                          "next",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       );
-                    }
-                    else{
+                    } else {
                       return CircularProgressIndicator();
                     }
                   },
@@ -157,15 +181,12 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _insert(datamodel data) async{
-    data.dateAdded=DateTime.now().toString();
-    int? id= await dbhelper.insert(data);
+  void _insert(datamodel data) async {
+    data.dateAdded = DateTime.now().toString();
+    print(data.dateAdded);
+    int? id = await dbhelper.insert(data);
     print(id);
   }
-
-
-
-
 }
 
 Widget mainbody(datamodel quote) {
@@ -195,7 +216,7 @@ Widget mainbody(datamodel quote) {
                         style: GoogleFonts.lemon(
                             color: Colors.white,
                             fontWeight: FontWeight.w100,
-                            fontSize: 30,
+                            fontSize: 35,
                             shadows: [
                               Shadow(
                                   color: Colors.black,
@@ -211,9 +232,9 @@ Widget mainbody(datamodel quote) {
             Container(
               child: Center(
                   child: Text(
-                    "-  ${quote.author!}",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  )),
+                "-  ${quote.author!}",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              )),
               // width: double.maxFinite,
               alignment: Alignment.centerRight,
             ),
@@ -259,4 +280,3 @@ Widget mainbody(datamodel quote) {
     ),
   );
 }
-

@@ -1,6 +1,7 @@
 import 'package:api_to_sql/extra.dart';
 import 'package:api_to_sql/logic/cubit/post_cubit.dart';
 import 'package:api_to_sql/logic/cubit/savedquotecubit_cubit.dart';
+import 'package:api_to_sql/presentation/screen/a.dart';
 // import 'package:api_to_sql/logic/cubit/updatecubit/update_cubit.dart';
 import 'package:api_to_sql/presentation/screen/homescreen.dart';
 import 'package:api_to_sql/presentation/screen/savedlist.dart';
@@ -31,7 +32,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme:ThemeData(
           androidOverscrollIndicator: AndroidOverscrollIndicator.stretch
-      ) ,
+      ),
 
       home: BlocProvider(create: (context) => PostCubit(),
 

@@ -1,3 +1,4 @@
+import 'package:api_to_sql/presentation/screen/savedlist.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
@@ -11,15 +12,37 @@ class SavedquotecubitCubit extends Cubit<SavedquoteState> {
     fetchfromdb();
   }
   
-  Future<void> fetchfromdb({String? texttofind=""}) async {
+  Future<void> fetchfromdb({String? texttofind="",DateTime? start,DateTime? end,String? author,String? tag}) async {
     try {
       // texttofind="";
+      authorlist=["all"];
+      tagslist=["all"];
+
 
       print("run 1");
       final dbhelper = DatabaseHelper.instance;
       print("run 2");
-      List<datamodel> results = await dbhelper.fetchSavedQuotes(texttofind:texttofind);
+
+      List<datamodel> results = await dbhelper.fetchSavedQuotes(texttofind:texttofind,end: end,start:start,author:author,tag:tag);
+      List<datamodel> allresults = await dbhelper.fetchSavedQuotes();
+      if (allresults != null) {
+        for (var item in allresults) {
+          if(authorlist.contains(item.author)){}
+          else{
+            authorlist.add(item.author);
+          }
+          for(var item1 in item.tags){
+            if(tagslist.contains(item1)){}
+            else{
+              tagslist.add(item1);
+            }
+          }
+        }
+
+      }
+      print("$tagslist 🟩🟩🟩🟩");
       print("run 3");
+
       if(results.length!=0) {
         emit(SavedLoaded(results));
       }

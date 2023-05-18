@@ -54,7 +54,17 @@ class DatabaseHelper {
     return id;
   }
 
-  Future<List<datamodel>> fetchSavedQuotes({texttofind = ""}) async {
+  Future<List<datamodel>> fetchSavedQuotes(
+      {texttofind = "", DateTime? start, DateTime? end, String? author, String? tag}) async {
+    if (texttofind == "all") {
+      texttofind = "";
+    }
+    if (author == "all"){
+      author = "";
+    }
+    if (tag == "all"){
+      tag = "";
+    }
     final db = await database;
     final results = await db.query("quotes");
     print("fetched $results");
@@ -66,7 +76,33 @@ class DatabaseHelper {
     List<datamodel> finalresultlist = [];
     for (datamodel item in resultinlist) {
       print(item.tags);
-      if (item.content.toLowerCase().contains(texttofind.toLowerCase()) ||
+      if (author != null && tag != null) {
+
+
+        if (start != null && end != null) {
+          if (DateTime.parse(item.dateAdded).isBefore(end) &&
+              DateTime.parse(item.dateAdded).isAfter(start) && item.author.contains(author) && item.tags.toString().contains(tag)) {
+            finalresultlist.add(item);
+          }
+          else{}
+        }
+        else if (start == null && end != null) {
+          if (DateTime.parse(item.dateAdded).isBefore(end) && item.author.contains(author) && item.tags.toString().contains(tag)) {
+            print("with end added 🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩");
+            finalresultlist.add(item);
+          }
+          else{}
+        }
+        else if (start != null && end == null) {
+          if (DateTime.parse(item.dateAdded).isAfter(start)&& item.author.contains(author) && item.tags.toString().contains(tag)) {
+            finalresultlist.add(item);
+          }else{}
+        }
+        else {
+          print("🟨🟩");
+          finalresultlist.add(item);
+        }
+      }else if (item.content.toLowerCase().contains(texttofind.toLowerCase()) ||
           item.author.toLowerCase().contains(texttofind.toLowerCase()) ||
           item.tags
               .toString()
@@ -74,7 +110,9 @@ class DatabaseHelper {
               .contains(texttofind.toLowerCase())) {
         finalresultlist.add(item);
       }
+
     }
+print("🟨");
     return finalresultlist;
     // return List.generate(results.length, (index) {
     //   return datamodel.fromJsonforread(results[index]);
