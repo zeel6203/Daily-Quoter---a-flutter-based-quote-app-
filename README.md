@@ -1,4 +1,4 @@
-# api_to_sql
+# Daily Quoter
 
 A Flutter based application that fetches data from A quote api using htttp request, then stores the fetched data on the device using sql. 
 
