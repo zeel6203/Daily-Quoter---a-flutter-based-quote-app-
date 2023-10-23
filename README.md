@@ -3,14 +3,14 @@
 A Flutter based application that fetches data from A quote api using htttp request, then stores the fetched data on the device using sql. 
 
 for this app there are many flutter librarys are used that are mentioned below:
-  cupertino_icons: ^1.0.2
-  dio: ^5.1.2
-  pretty_dio_logger: ^1.3.1
-  flutter_bloc: ^8.1.2
-  google_fonts: ^4.0.4
-  sqflite: ^2.2.8+2
-  intl: ^0.17.0
-  date_time_picker: ^2.1.0
+ - cupertino_icons: ^1.0.2
+ - dio: ^5.1.2
+ - pretty_dio_logger: ^1.3.1
+ - flutter_bloc: ^8.1.2
+ - google_fonts: ^4.0.4
+ - sqflite: ^2.2.8+2
+ - intl: ^0.17.0
+ - date_time_picker: ^2.1.0
 
 ## demo videos
 
