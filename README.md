@@ -1,6 +1,9 @@
 # api_to_sql
 
-A new Flutter project.
+A Flutter based application that fetches data from A quote api using htttp request, then stores the fetched data on the device using sql. 
+
+for this app there are many flutter librarys are used that are mentioned below:
+- 
 
 ## demo videos
 
@@ -15,15 +18,4 @@ https://github.com/zeel6203/Daily-Quoter---a-flutter-based-quote-app-/assets/963
 
 
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
